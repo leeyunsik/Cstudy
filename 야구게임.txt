@@ -1,0 +1,103 @@
+#include <iostream>
+#include<time.h>
+using namespace std;
+#include 
+int main(){
+srand((unsigned int)time(0));
+int iNumber[9] = {};
+// 1~9까지의 숫자를 설정한다.
+
+for (int i =0;i<9;++i{
+iNumber[i]=i+1;
+}
+//설정된 숫자를 섞어준다.
+int iTemp,idx1,idx2;
+for(int i = 0;i<100;++i)
+{
+	idx = rand()%9;
+	idx = rand()%9;
+
+	iTemp = iNumber[idx1];
+	iNumber[idx1] = iNumber[idx2];
+	iNumber[idx2] = iTemp;
+}
+//cout << "***"<<endl;
+cout << iNumber[0]<< "\t"<<iNumber[1] << "\t" << iNumber[2] <<endl;
+
+int iStrike =0; iBall = 0;
+int iInput[3];
+
+while(true)
+{cout << "1~9사이의 숫자중 숫자 3개를 입렵하시오 (0 : 종료): ";
+cin >> iInput[0] >> iInput[1] >> iInput[2];
+
+	if (iInput[0]==0 ||iInput[1]==0 || iInput[2] ==0)
+		break;
+
+	else if (iInput[0]<0 ||iInput[0]>9 ||
+		iInput[1]<0 ||iInput[1]>9 ||
+		iInput[2]<0 ||iInput[2]>9 )
+		{cout <<"잘못된 숫자입력"<<endl;
+		continue;}
+	else if (iInput[0]==iInput[1] ||iInput[0]==iInput[2]||
+		iInput[1]==iInput[2]){
+		cout <<"중복된 숫자입력"<<endl;	
+		continue;}
+	//매번 strike와 ball의 수가 달라지기 때문에 0으로 초기화하고 다시 계산한다.
+	iStrike =iBall=0;
+	//i for 문은 맞춰야 할 숫자의 인덱스를 구한다.
+	for(int i=0;i<3;++i)
+	{
+	//j for 문은 입력받은 숫자의 인덱스를 구한다
+	for (int j=0;j<3;++j){	
+		//i 가 0일때 j는 0~2까지 반복한다. 즉 맞춰야할 숫자의
+		//첫번째 값과 입력받은 숫자의 첫번재 ,둘째 ,셋째를
+		//차례대로 비교하고 같은 값이 있는지를 찾아낸다
+		if (iNumber[i]==iInput[j]){
+		//값이 같은것이 있을경우 스트라이크 아니면 볼이므로
+		//자리가 같은지를 체크해본다 i와h는 현재 맞춰야 할
+		//숫자의 인덱스이고 두 값이 같으므로 이인덱스가 
+		//곧 위치가 된다. 인덱스가 서로 같을 경우라면 자리까지
+		//같다는 의미이므로 스트라이크 증가,그게 아니면
+		//자리가 다르다는 의미이므로 ball 증가
+		if(i==j)
+		++iStrike;
+		else
+		++iBall;
+		break;
+		}
+	} 
+	}
+	if (iStrike ==3)
+		{
+		cout <<"숫자를 모두 맞춤"<<endl;
+		break;
+		}
+	else if (iStrike ==0&& iBall ==0)
+		cout "Out"<<endl;
+	else 
+		cout <<iStrike << "strike"<<iBall <<"ball" <<endl;
+}
+
+
+14강
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,112 @@
+#include<iostream>
+using namespace std;
+#include<time.h>
+int main() {
+	srand((unsigned)time(0));
+	int iNumber[25] = {};
+
+	for (int i = 0; i < 25; ++i) {
+		iNumber[i] = i + 1;
+	}
+
+	int iTemp, idx1, idx2;
+	for (int i = 0; i < 100; ++i) {
+		idx1 = rand() % 25;
+		idx2 = rand() % 25;
+
+		iTemp = iNumber[idx1];
+		iNumber[idx1] = iNumber[idx2];
+		iNumber[idx2] = iTemp;
+	}	
+	
+	int Bing=0;
+	while (true) {
+		system("cls");
+
+		//숫자를 5x5로 출력한다.
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 5; ++j) {
+				if (iNumber[i * 5 + j] == INT_MAX)
+					cout << "*\t";
+				else
+					cout << iNumber[i * 5 + j] << "\t";
+			}
+			cout << endl;
+			
+		}
+		if (Bing >= 5)
+			break;
+		cout << "Bingoline: " << Bing << endl;
+		cout << "숫자를 입력하시오(0 :종료)";
+		int iInput;
+		cin >> iInput;
+
+		if (iInput == 0)
+			break;
+		else if (iInput < 1 || iInput>25)
+			continue;
+
+		//중복입력을 체크하기 위한 변수이다. 기본적으로 중복되었다라고 
+		//하기위해 true값을 준다.
+		bool bAcc = true;
+
+		//모든숫자를 차례대로 검사해서 입력한 숫자와 같은 숫자가
+		//있는지를 찾아낸다.
+		for (int i = 0; i < 25; ++i) {
+			if (iInput == iNumber[i]) {
+				bAcc = false;
+
+				iNumber[i] = INT_MAX;
+
+				//더이상 다른 숫자를 찾아볼 필요가 없다.
+				break;
+			}
+		}
+		
+		//bAcc변수가 true일 경우 중복된 숫자를 입력해서 숫자를 *로 
+		//바꾸지 못했으므로 다시 입력받게 continue 해준다.
+		if (bAcc)
+			continue;
+
+		Bing = 0;
+
+		int iStar1 = 0, iStar2 = 0, iStar3 =0,iStar4= 0;
+		for (int i = 0; i < 5; ++i) {
+			iStar1 = iStar2 = 0;
+			for (int j = 0; j < 5; ++j) {
+				//가로별 개수를 구해준다
+				if (iNumber[i * 5 + j] == INT_MAX)
+					++iStar1;
+				//세로별 개수를 구해준다.
+				if (iNumber[j * 5 + i] == INT_MAX)
+					++iStar2;
+			}
+			//j for문을 빠져나오고 나면 현재 줄의 가로 별 개수가 몇개인지
+			//iStar1변수에 들어가게 된다. iStar1이 값이 5이면 한줄이 
+			//모두 *이라는 의미이므로 빙고 줄 카운트를 추가해준다.
+			if (iStar1 == 5)
+				++Bing;
+
+			if (iStar2 == 5)
+				++Bing;
+		}
+
+		//왼쪽 상단에서 오른쪽 하단 대각선 체크
+		
+		for (int k=0; k < 5; ++k)
+			if (iNumber[6 * k] == INT_MAX)
+				++iStar3;
+
+		if (iStar3 == 5)
+			++Bing;
+		
+		for (int k = 1; k < 6; ++k)
+			if (iNumber[4 * k] == INT_MAX)
+				++iStar4;
+
+		if (iStar4 == 5)
+			++Bing;
+
+	}
+		return 0;
+}

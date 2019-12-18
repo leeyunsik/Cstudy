@@ -1,0 +1,20 @@
+cin >> tStudentArr[iStudentCount].strName;
+
+cin.ignore(1024, '\n'); //cin과 cingetline을 같이쓰면 cin에 \n이 들어있기때문에 오류가뜬다
+
+cin.getline(tStudentArr[iStudentCount].strAddress,ADDRESS_SIZE);//스페이스바까지 문자열로 인식해서 다가져온다.
+
+strcpy_s(tStudent.strName, "가나다라 asdf");// strcpy_s 라는 함수를 이용해야 문자열을 복사해 주어야한다.이함수는 오른쪽에 있는 문자열을 왼쪽으로 복하새준다.
+
+
+strcat_s(tStudent.strName, "문자열 붙이기"); //strcat_s 함수는 문자열을 붙여주는 기능이다.오른쪽 문자열을 붙여서 만들어준다.
+
+strcpy_s(tStudent.strName, "홍길동");  strcmp 함수는 두 문자열을 비교하여 같을 경우  0을 반환하고 다를 경우//0이 아닌 값을 반환한다.
+
+#include <time.h> srand((unsigned int)time(0));
+
+system("cls");
+
+system("pause");
+
+iDamage = iDamage < 1 ? 1 : iDamage;//삼항연산자 : 조건식 : ?true일때값 :false일때 값;
