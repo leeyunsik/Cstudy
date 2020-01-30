@@ -2,7 +2,7 @@ cin >> tStudentArr[iStudentCount].strName;
 
 cin.ignore(1024, '\n'); //cin과 cingetline을 같이쓰면 cin에 \n이 들어있기때문에 오류가뜬다
 
-cin.getline(tStudentArr[iStudentCount].strAddress,ADDRESS_SIZE);//스페이스바까지 문자열로 인식해서 다가져온다.
+cin.getline(tStudentArr[iStudentCount].strAddress,ADDRESS_SIZE);//스페이스바까지 문자열로 인식해서 다가져온다. (저장할 매개변수 , 저장할 최대값)
 
 strcpy_s(tStudent.strName, "가나다라 asdf");// strcpy_s 라는 함수를 이용해야 문자열을 복사해 주어야한다.이함수는 오른쪽에 있는 문자열을 왼쪽으로 복하새준다.
 
