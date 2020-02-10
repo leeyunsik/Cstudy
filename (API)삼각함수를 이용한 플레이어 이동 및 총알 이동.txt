@@ -55,7 +55,8 @@ typedef struct _tagBullet
 	SPHERE tSphere;
 	float fDist;    //사정거리
 	float fLimitDist; //제한거리
-	
+	float fAngle; //총알 각도
+
 }BULLET, *PUBLLET;
 
 //플레이어 총알 
@@ -113,7 +114,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	
 	g_tMonster.fSpeed = 300.f;
 	g_tMonster.fTime = 0.f;
-	g_tMonster.fLimitTime = 1.3f;
+	g_tMonster.fLimitTime = 1.0f;
 	g_tMonster.iDir = 1;
 
 	//플레이어 총구의 위치를 구해준다.
@@ -370,13 +371,65 @@ void Run()
 		//RECTANGLE rcBullet;
 		BULLET tBullet;
 
-		tBullet.tSphere.x = g_tPlayer.x+50.f;
-		tBullet.tSphere.y = g_tPlayer.y;
+		//tBullet.tSphere.x = g_tPlayer.x+50.f;
+		//tBullet.tSphere.y = g_tPlayer.y;
+		tBullet.tSphere.x = g_tGunPos.x + cosf(g_fPlayerAngle)*25.f; //발사 시작하는곳
+		tBullet.tSphere.y = g_tGunPos.y + sinf(g_fPlayerAngle)*25.f;
 		tBullet.tSphere.r = 25.f;
 		
 		tBullet.fDist = 0.f;
 		tBullet.fLimitDist = 500.f;
+		tBullet.fAngle = g_fPlayerAngle;
+
 		g_PlayerBulletList.push_back(tBullet);
+	}
+
+	if (GetAsyncKeyState('1') & 0x8000)
+	{
+		float fAngle = g_fPlayerAngle - PI / 12.f; //파이 180
+
+		for (int i = 0; i < 3; ++i)
+		{
+			BULLET tBullet;
+
+			//tBullet.tSphere.x = g_tPlayer.x+50.f;
+			//tBullet.tSphere.y = g_tPlayer.y;
+			tBullet.tSphere.x = g_tGunPos.x + cosf(fAngle)*25.f; //발사 시작하는곳
+			tBullet.tSphere.y = g_tGunPos.y + sinf(fAngle)*25.f;
+			tBullet.tSphere.r = 25.f;
+
+			tBullet.fDist = 0.f;
+			tBullet.fLimitDist = 500.f;
+			tBullet.fAngle = fAngle;
+
+			g_PlayerBulletList.push_back(tBullet);
+
+			fAngle += PI / 12.f;
+		}
+	}
+
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		float fAngle = 0.f; //파이 180
+
+		for (int i = 0; i < 36; ++i)
+		{
+			BULLET tBullet;
+
+			//tBullet.tSphere.x = g_tPlayer.x+50.f;
+			//tBullet.tSphere.y = g_tPlayer.y;
+			tBullet.tSphere.x = g_tGunPos.x + cosf(fAngle)*25.f; //발사 시작하는곳
+			tBullet.tSphere.y = g_tGunPos.y + sinf(fAngle)*25.f;
+			tBullet.tSphere.r = 25.f;
+
+			tBullet.fDist = 0.f;
+			tBullet.fLimitDist = 500.f;
+			tBullet.fAngle = fAngle;
+
+			g_PlayerBulletList.push_back(tBullet);
+
+			fAngle += PI / 18.f;
+		}
 	}
 
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
@@ -476,7 +529,7 @@ void Run()
 		tBullet.tSphere.r = 25.f;
 		
 		tBullet.fDist = 0.f;
-		tBullet.fLimitDist = 800.f;
+		tBullet.fLimitDist = 300.f;
 
 		g_MonsterBulletList.push_back(tBullet);
 	}
@@ -489,11 +542,13 @@ void Run()
 
 	
 
-	//몬스터 총알 충돌
+	//플레이어 총알 이동
 	for (iter = g_PlayerBulletList.begin(); iter != iterEnd;)
 	{
-		(*iter).tSphere.x += fSpeed;
+		(*iter).tSphere.x += cosf((*iter).fAngle)*fSpeed;;
 		
+		(*iter).tSphere.y += sinf((*iter).fAngle)*fSpeed;
+
 		(*iter).fDist += fSpeed;
 
 		float fX = (*iter).tSphere.x - g_tMonster.tSphere.x;
@@ -613,4 +668,4 @@ void Run()
 			(*iter).tSphere.y + (*iter).tSphere.r);
 	}
 	
-} // 8강 15분 57
+} 
