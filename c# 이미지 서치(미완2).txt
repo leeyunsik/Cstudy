@@ -1,0 +1,196 @@
+  public void searchIMG(Bitmap screen_img, Bitmap find_img, int number)
+        {
+            //스크린 이미지 선언
+            using (Mat ScreenMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(screen_img))
+
+
+            //찾을 이미지 선언
+            using (Mat FindMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(find_img))
+            //스크린 이미지에서 FindMat 이미지를 찾아라
+            using (Mat res = ScreenMat.MatchTemplate(FindMat, TemplateMatchModes.CCoeffNormed))
+            {
+                //찾은 이미지의 유사도를 담을 더블형 최대 최소 값을 선언합니다.
+                double minval, maxval = 0;
+                //찾은 이미지의 위치를 담을 포인트형을 선업합니다.
+                OpenCvSharp.Point minloc, maxloc;
+                //찾은 이미지의 유사도 및 위치 값을 받습니다. 
+                Cv2.MinMaxLoc(res, out minval, out maxval, out minloc, out maxloc);
+                // Debug.WriteLine("찾은 이미지의 유사도 : " + maxval);
+                armorcount++;
+                if (armor == true)
+                {
+                    if (armorcount > 1500)
+                    {//장비셋팅 , 템팔기
+                        this.Invoke(new Action(delegate ()
+                        {
+                            label3.Text = armortime.ToString();
+                            label3.Refresh();
+                        }));
+                        armorcount=0;
+                        armortime++;
+                        
+                        InClick(1180, 55);
+                        Thread.Sleep(1000);
+                        InClick(1123, 650);
+                        Thread.Sleep(1000);
+                        InClick(970, 661);
+                        Thread.Sleep(1000);
+                        InClick(810, 670);
+                        Thread.Sleep(1000);
+                        InClick(638, 610);
+                        Thread.Sleep(1000);
+                        InClick(1036, 662);
+                        Thread.Sleep(1000);
+                        InClick(721, 537);
+                        Thread.Sleep(5000);
+                        return;
+                    }
+                }
+                if (number == 16 && maxval >= 0.94)
+                {
+
+                    Debug.WriteLine(maxval);
+                    
+
+                }
+                else if (number == 16 && maxval < 0.94)
+                    return;
+
+                if (number == 6 && maxval >= 0.94)
+                {
+
+                    Debug.WriteLine(maxval);
+                    if (maxloc.Y > 400)
+                        return;
+
+                }
+                else if (number == 6 && maxval < 0.945) { 
+                    return;
+                    }
+
+
+                //이미지를 찾았을 경우 클릭이벤트를 발생!!
+
+                if (maxval >= 0.90)
+                {
+                    maincount = 0;
+                    this.Invoke(new Action(delegate ()
+                    {
+
+                        label1.Text = name[number];
+                        label1.Refresh();
+                        //  String[] name = { "ok", "스킵", "보상", "장비", "x1", "x2", "메인", "튜토리얼", "튜토리얼2", "확인", "돌발", "x3", "지역", "보상받고 더하기", "지역끝" };
+
+
+                        if (number == 2)
+                        {
+
+
+                            InClick(maxloc.X + find_img.Width / 2, maxloc.Y - 40 + find_img.Height / 2);
+                        }
+                        else if (number == 5)
+                        {
+                            InClick(maxloc.X, maxloc.Y - 25);
+                            
+
+
+                        }
+                        else if (number == 6)
+                        {
+                            Debug.WriteLine("main" + maxval);
+                            
+                            InClick(80, 194);
+                        }
+                        else if (number == 10)
+                        {
+                            outbreak = false;
+                            InClick(maxloc.X + find_img.Width + 30 / 2, maxloc.Y - 35 + find_img.Height / 2);
+                            
+                        }
+                        else if (number == 11)//광고
+                        {
+
+
+                            InClick(maxloc.X + find_img.Width, maxloc.Y - 35 + find_img.Height);
+                            
+                        }
+                        else if (number == 12)//지역
+                        {
+                            this.Invoke(new Action(delegate ()
+                            {
+                                label4.Text = "지역";
+                                label4.Refresh();
+                            }));
+                            InClick(maxloc.X + find_img.Width / 2, maxloc.Y - 35 + find_img.Height / 2);
+                            Thread.Sleep(5000);
+                            InClick(1180, 380);
+
+                            Thread.Sleep(500);
+                            InClick(1180, 380);
+                            Thread.Sleep(300);
+                            InClick(1180, 380);
+                            Thread.Sleep(300);
+                            InClick(1180, 380);
+                            Thread.Sleep(5000);
+                            InClick(913, 552); //달려가기
+                            
+
+                        }
+                        else if (number == 16)//메인지역 19lv
+                        {
+                            this.Invoke(new Action(delegate ()
+                            {
+                                label4.Text = "지역";
+                                label4.Refresh();
+                            }));
+                            InClick(maxloc.X + find_img.Width / 2, maxloc.Y - 35 + find_img.Height / 2);
+                            Thread.Sleep(5000);
+                            InClick(1180, 380);
+
+                            Thread.Sleep(500);
+                            InClick(1180, 380);
+                            InClick(913, 552); //달려가기
+                            Thread.Sleep(5000);
+                            
+
+
+                        }
+                        else if (number == 14)
+                        {
+
+                            regioncount = false;
+                            
+
+
+                        }
+                        else if (number == 15)
+                        {
+                            
+                        }
+                        else if (number == 6)
+                        {
+                            InClick(95, 200);
+                        }
+                        else
+                            InClick(maxloc.X + find_img.Width / 2, maxloc.Y - 35 + find_img.Height / 2);
+                        
+                    }));
+                }
+                else
+                {
+                    count++;
+                    maincount++;
+                    if (maincount > 800)
+                    {
+                        InClick(80, 194);
+                        maincount = 0;
+                    }
+                    if (count > 50)
+                    {
+                        InClick(1270, 700);
+                        count = 0;
+                    }
+                }
+
+            }
+        }
